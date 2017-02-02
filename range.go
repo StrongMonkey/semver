@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/rancher/catalog-service/utils"
 )
 
 type wildcardType int
@@ -33,22 +35,34 @@ type comparator func(Version, Version) bool
 
 var (
 	compEQ comparator = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) == 0
+		a := v1.String()
+		b := v2.String()
+		return !utils.VersionGreaterThan(a, b) && !utils.VersionGreaterThan(b, a)
 	}
 	compNE = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) != 0
+		a := v1.String()
+		b := v2.String()
+		return utils.VersionGreaterThan(a, b) || utils.VersionGreaterThan(b, a)
 	}
 	compGT = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) == 1
+		a := v1.String()
+		b := v2.String()
+		return utils.VersionGreaterThan(a, b)
 	}
 	compGE = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) >= 0
+		a := v1.String()
+		b := v2.String()
+		return utils.VersionGreaterThan(a, b) || (!utils.VersionGreaterThan(a, b) && !utils.VersionGreaterThan(b, a))
 	}
 	compLT = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) == -1
+		a := v1.String()
+		b := v2.String()
+		return utils.VersionGreaterThan(b, a)
 	}
 	compLE = func(v1 Version, v2 Version) bool {
-		return v1.Compare(v2) <= 0
+		a := v1.String()
+		b := v2.String()
+		return utils.VersionGreaterThan(b, a) || (!utils.VersionGreaterThan(a, b) && !utils.VersionGreaterThan(b, a))
 	}
 )
 
