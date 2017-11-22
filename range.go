@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/rancher/catalog-service/utils/version"
+	"github.com/rancher/catalog-controller/utils/version"
 )
 
 type wildcardType int
